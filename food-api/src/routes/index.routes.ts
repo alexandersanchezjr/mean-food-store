@@ -1,5 +1,6 @@
 import { Router } from "express";
 import foodRouter from "./food.routes";
+import userRouter from "./user.routes";
 
 const indexRouter = Router();
 
