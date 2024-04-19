@@ -4,13 +4,14 @@ import { Cart } from '@shared/models/Cart';
 import { TitleComponent } from "../../partials/title/title.component";
 import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { NotFoundComponent } from "../../partials/not-found/not-found.component";
 
 @Component({
     selector: 'app-cart',
     standalone: true,
     templateUrl: './cart.component.html',
     styleUrl: './cart.component.css',
-    imports: [TitleComponent, NgFor, RouterModule, CurrencyPipe, NgIf]
+    imports: [TitleComponent, NgFor, RouterModule, CurrencyPipe, NgIf, NotFoundComponent]
 })
 export class CartComponent {
 

@@ -1,4 +1,4 @@
-import { CurrencyPipe, NgFor } from '@angular/common';
+import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FoodService } from '@services/food.service';
@@ -6,6 +6,7 @@ import { Food } from '@shared/models/Food';
 import { StarRatingModule } from 'angular-star-rating';
 import { SearchComponent } from "../../partials/search/search.component";
 import { TagComponent } from '@components/partials/tag/tag.component';
+import { NotFoundComponent } from "../../partials/not-found/not-found.component";
 
 @Component({
     selector: 'app-home',
@@ -15,10 +16,12 @@ import { TagComponent } from '@components/partials/tag/tag.component';
     imports: [
         RouterModule,
         NgFor,
+        NgIf,
         StarRatingModule,
         CurrencyPipe,
         SearchComponent,
-        TagComponent
+        TagComponent,
+        NotFoundComponent
     ]
 })
 export class HomeComponent {

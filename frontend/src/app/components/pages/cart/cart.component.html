@@ -1,6 +1,10 @@
 <app-title title="Food Cart" margin="1.5rem 0 0 2.5rem"></app-title>
-
-<div class="container">
+<app-not-found
+  *ngIf="!cart || cart.totalCount === 0"
+  notFoundMessage="Your cart is empty!"
+  resetLinkText="Go to homepage"
+></app-not-found>
+<div class="container" *ngIf="cart.totalCount > 0">
   <ul>
     <li *ngFor="let item of cart.items">
       <div>
@@ -34,7 +38,7 @@
       </div>
     </li>
   </ul>
-  <div class="checkout" *ngIf="cart.totalCount > 0">
+  <div class="checkout">
     <div>
       <div class="foods-count">{{ cart.totalCount }} Items</div>
       <div>

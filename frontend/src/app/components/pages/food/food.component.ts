@@ -1,4 +1,4 @@
-import { CurrencyPipe, NgFor } from '@angular/common';
+import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CartService } from '@services/cart.service';
@@ -6,18 +6,21 @@ import { FoodService } from '@services/food.service';
 import { Cart } from '@shared/models/Cart';
 import { Food } from '@shared/models/Food';
 import { StarRatingModule } from 'angular-star-rating';
+import { NotFoundComponent } from "../../partials/not-found/not-found.component";
 
 @Component({
-  selector: 'app-food',
-  standalone: true,
-  imports: [
-    StarRatingModule,
-    NgFor,
-    RouterModule,
-    CurrencyPipe
-  ],
-  templateUrl: './food.component.html',
-  styleUrl: './food.component.css'
+    selector: 'app-food',
+    standalone: true,
+    templateUrl: './food.component.html',
+    styleUrl: './food.component.css',
+    imports: [
+        StarRatingModule,
+        NgFor,
+        NgIf,
+        RouterModule,
+        CurrencyPipe,
+        NotFoundComponent
+    ]
 })
 export class FoodComponent {
 
