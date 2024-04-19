@@ -13,9 +13,16 @@ export class FoodService {
     return sample_foods;
   }
 
+  getById(id: string): Food {
+    return this.getAll().find(
+      (food) => food.id == id
+    ) ?? new Food();
+  }
+
   searchByName(name: string) {
     return this.getAll().filter(
       food => food.name.toLowerCase().includes(name.toLowerCase())
     )
   }
+
 }
