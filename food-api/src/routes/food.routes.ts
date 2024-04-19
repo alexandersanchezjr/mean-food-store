@@ -5,8 +5,8 @@ const foodRouter = Router();
 
 foodRouter.get("/", controller.getAllFoods);
 foodRouter.get("/search/:name", controller.getFoodByName);
-foodRouter.get("/:foodId", controller.getFoodById);
 foodRouter.get("/tags", controller.getAllTags);
+foodRouter.get("/:foodId", controller.getFoodById);
 foodRouter.get("/tag/:tagName", controller.getAllFoodsByTag);
 
 export default foodRouter;

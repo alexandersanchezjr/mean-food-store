@@ -7,6 +7,7 @@ import { StarRatingModule } from 'angular-star-rating';
 import { SearchComponent } from "../../partials/search/search.component";
 import { TagComponent } from '@components/partials/tag/tag.component';
 import { NotFoundComponent } from "../../partials/not-found/not-found.component";
+import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
     selector: 'app-home',
@@ -29,15 +30,22 @@ export class HomeComponent {
   foods: Food[] = [];
 
   constructor(private foodService: FoodService, activatedRoute: ActivatedRoute) {
+    let foodsObservable: Observable<Food[]>;
     activatedRoute.params.subscribe(
       (params) => {
         const name: string = params['name']
         if(params['name'])
-          this.foods = this.foodService.searchByName(name);
+          foodsObservable = foodService.searchByName(name);
         else if(params['tag'])
-          this.foods = this.foodService.getAllFoodsByTag(params['tag']);
+          foodsObservable = foodService.getAllFoodsByTag(params['tag']);
         else
-          this.foods = foodService.getAll();
+          foodsObservable = foodService.getAll();
+
+        foodsObservable.subscribe(
+          (serverFoods) => {
+            this.foods = serverFoods
+          }
+        )
       }
     )
   }

@@ -34,7 +34,11 @@ export class FoodComponent {
   ) {
     activatedRoute.params.subscribe(
       (params) => {
-        if(params['id']) this.food = foodService.getById(params['id']);
+        if(params['id']) {
+          foodService.getById(params['id']).subscribe(
+            (food) => this.food = food
+          )
+        }
       }
     )
   }

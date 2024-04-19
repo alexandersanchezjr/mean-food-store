@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { sample_foods, sample_tags } from "../data";
 
 const getAllFoods = async (req: Request, res: Response) => {
+    console.log(sample_foods);
     res.send(sample_foods);
 }
 
@@ -18,6 +19,7 @@ const getFoodById = async (req: Request, res: Response) => {
 }
 
 const getAllTags = async (req: Request, res: Response) => {
+    console.log(sample_tags);
     res.send(sample_tags);
 }
 

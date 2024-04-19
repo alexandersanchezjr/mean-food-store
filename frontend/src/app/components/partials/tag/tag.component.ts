@@ -20,7 +20,9 @@ export class TagComponent {
   tags?: Tag[];
 
   constructor(private foodService: FoodService) {
-    this.tags = foodService.getAllTags();
+    foodService.getAllTags().subscribe(
+      (serverTags) => this.tags = serverTags
+    );
   }
 
 }
