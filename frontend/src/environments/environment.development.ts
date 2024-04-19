@@ -4,4 +4,5 @@ export const environment = {
   foodsPath: '/foods',
   tagsPath: '/tags',
   searchPath: '/search',
+  loginPath: '/users/login',
 };

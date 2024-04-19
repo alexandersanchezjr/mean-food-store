@@ -3,18 +3,18 @@
     <a routerLink="/" class="logo">Food Store</a>
     <nav>
       <ul>
-        <li>
+        <li *ngIf="!isAuthenticated">
           <a routerLink="/login" routerLinkActive="active">Login</a>
         </li>
-        <li class="menu-container">
-          <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+        <li *ngIf="isAuthenticated" class="menu-container">
+          <a routerLink="/dashboard" routerLinkActive="active">{{ user!!.name }}</a>
           <div class="menu">
             <a [routerLink]="['/profile']" routerLinkActive="active">Profile</a>
             <a routerLink="/orders" routerLinkActive="active">Orders</a>
-            <a routerLink="" routerLinkActive="active">Logout</a>
+            <a routerLink="" routerLinkActive="active" (click)="logout()">Logout</a>
           </div>
         </li>
-        <li>
+        <li *ngIf="isAuthenticated">
           <a [routerLink]="['/cart']" routerLinkActive="router-link-active">
             Cart <span *ngIf="cartQuantity">{{ cartQuantity }}</span>
           </a>

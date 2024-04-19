@@ -4,9 +4,17 @@ import { StarRatingModule } from 'angular-star-rating';
 
 import { routes } from './app.routes';
 import { HttpClientModule } from '@angular/common/http';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideToastr } from 'ngx-toastr';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideAnimations(),
+    provideToastr({
+      timeOut: 3000,
+      positionClass: 'toast-bottom-right',
+      newestOnTop: false,
+    }),
     provideRouter(routes),
     importProvidersFrom(
       StarRatingModule.forRoot(),
