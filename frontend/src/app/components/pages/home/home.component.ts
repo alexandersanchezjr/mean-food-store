@@ -5,6 +5,7 @@ import { FoodService } from '@services/food.service';
 import { Food } from '@shared/models/Food';
 import { StarRatingModule } from 'angular-star-rating';
 import { SearchComponent } from "../../partials/search/search.component";
+import { TagComponent } from '@components/partials/tag/tag.component';
 
 @Component({
     selector: 'app-home',
@@ -16,7 +17,8 @@ import { SearchComponent } from "../../partials/search/search.component";
         NgFor,
         StarRatingModule,
         CurrencyPipe,
-        SearchComponent
+        SearchComponent,
+        TagComponent
     ]
 })
 export class HomeComponent {
@@ -29,6 +31,8 @@ export class HomeComponent {
         const name: string = params['name']
         if(params['name'])
           this.foods = this.foodService.searchByName(name);
+        else if(params['tag'])
+          this.foods = this.foodService.getAllFoodsByTag(params['tag']);
         else
           this.foods = foodService.getAll();
       }
