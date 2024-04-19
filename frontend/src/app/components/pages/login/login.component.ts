@@ -9,13 +9,14 @@ import { TitleComponent } from '../../partials/title/title.component';
 import { NgIf } from '@angular/common';
 import { UserService } from '@services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { InputComponent } from "../../partials/input/input.component";
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
-  imports: [ReactiveFormsModule, TitleComponent, NgIf],
+    selector: 'app-login',
+    standalone: true,
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.css',
+    imports: [ReactiveFormsModule, TitleComponent, NgIf, InputComponent]
 })
 export class LoginComponent {
   loginForm!: FormGroup;
