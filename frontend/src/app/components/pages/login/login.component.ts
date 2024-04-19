@@ -9,14 +9,21 @@ import { TitleComponent } from '../../partials/title/title.component';
 import { NgIf } from '@angular/common';
 import { UserService } from '@services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { InputComponent } from "../../partials/input/input.component";
+import { TextInputComponent } from '../../partials/text-input/text-input.component';
+import { DefaultButtonComponent } from '../../partials/default-button/default-button.component';
 
 @Component({
-    selector: 'app-login',
-    standalone: true,
-    templateUrl: './login.component.html',
-    styleUrl: './login.component.css',
-    imports: [ReactiveFormsModule, TitleComponent, NgIf, InputComponent]
+  selector: 'app-login',
+  standalone: true,
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.css',
+  imports: [
+    ReactiveFormsModule,
+    TitleComponent,
+    NgIf,
+    TextInputComponent,
+    DefaultButtonComponent,
+  ],
 })
 export class LoginComponent {
   loginForm!: FormGroup;
@@ -36,7 +43,8 @@ export class LoginComponent {
       password: ['', Validators.required],
     });
 
-    this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl =
+      this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
   }
 
   get formControls() {
@@ -47,11 +55,13 @@ export class LoginComponent {
     this.submitted = true;
     if (this.loginForm.invalid) return;
 
-    this.userService.login({
-      email: this.formControls['email'].value,
-      password: this.formControls['password'].value,
-    }).subscribe(() => {
-      this.router.navigateByUrl(this.returnUrl);
-    });
+    this.userService
+      .login({
+        email: this.formControls['email'].value,
+        password: this.formControls['password'].value,
+      })
+      .subscribe(() => {
+        this.router.navigateByUrl(this.returnUrl);
+      });
   }
 }

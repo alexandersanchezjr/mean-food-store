@@ -2,51 +2,19 @@
   <div class="details">
     <app-title title="Login"></app-title>
     <form [formGroup]="loginForm" (ngSubmit)="submit()">
-      <app-input label="Email">
-        <label for="email">Email</label>
-        <input
-          type="email"
-          formControlName="email"
-          class="form-control"
-          id="email"
-          placeholder="Enter email"
-        />
-        <div
-          *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)"
-          class="alert alert-danger"
-        >
-          <div *ngIf="loginForm.get('email')?.errors?.['required']">
-            Email is required
-          </div>
-          <div *ngIf="loginForm.get('email')?.errors?.['email']">
-            Email must be a valid email address
-          </div>
-        </div>
-      </app-input>
-      <div class="form-group">
-        
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input
-          type="password"
-          formControlName="password"
-          class="form-control"
-          id="password"
-          placeholder="Enter password"
-        />
-        <div
-          *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)"
-          class="alert alert-danger"
-        >
-          <div *ngIf="loginForm.get('password')?.errors?.['required']">
-            Password is required
-          </div>
-        </div>
-      </div>
-      <div class="button">
-        <button type="submit">Login</button>
-      </div>
+      <app-text-input
+        [control]="formControls['email']"
+        [showErrorsWhen]="submitted"
+        label="Email"
+        type="email"
+      />
+      <app-text-input
+        [control]="formControls['password']"
+        [showErrorsWhen]="submitted"
+        label="Password"
+        type="password"
+      />
+      <app-default-button text="Login"/>
     </form>
   </div>
 </div>
