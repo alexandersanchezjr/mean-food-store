@@ -13,6 +13,7 @@ app.use(
   })
 );
 
+app.use(express.json());
 app.use('/api', indexRoutes);
 
 const port = 3000;
