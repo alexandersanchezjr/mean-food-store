@@ -1,13 +1,23 @@
+import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { CartService } from '@services/cart.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, NgIf],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+
+  cartQuantity: number = 0;
+
+  constructor(private router: Router, private cartService: CartService) {
+    this.cartService.getCartObservable().subscribe((cart) => {
+      this.cartQuantity = cart.totalCount
+    })
+  }
 
 }

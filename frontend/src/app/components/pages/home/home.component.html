@@ -2,7 +2,7 @@
 <app-tag></app-tag>
 <ul>
   <li *ngFor="let food of foods">
-    <a [routerLink]="['/food/{{ food.id }}']" routerLinkActive="router-link-active">
+    <a [routerLink]="['/food/', food.id]" routerLinkActive="router-link-active">
       <img [src]="food.imageUrl" [alt]="food.name">
       <div class="content">
         <div class="name">
