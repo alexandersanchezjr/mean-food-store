@@ -1,6 +1,19 @@
 import { Request, Response } from "express";
 import { sample_users } from "../data";
 import jwt from "jsonwebtoken";
+import { UserModel } from "../model/User.model";
+import asyncHandler from "express-async-handler";
+
+const seedUsers = asyncHandler(async (req: Request, res: Response) => {
+  const usersCount = await UserModel.countDocuments();
+  if (usersCount > 0) {
+    res.send("Users already exist");
+    return;
+  }
+
+  await UserModel.create(sample_users);
+  res.send("Users created");
+})
 
 const register = async (req: Request, res: Response) => {
   res.send("register");
@@ -28,4 +41,4 @@ const generateTokenResponse = (user: any) => {
   return user;
 };
 
-export { register, login };
+export { seedUsers, register, login };
