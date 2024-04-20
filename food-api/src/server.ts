@@ -1,6 +1,10 @@
-import express, { Router } from "express";
+import express from "express";
 import cors from "cors";
 import indexRoutes from "./routes/index.routes";
+import 'dotenv/config';
+import dbConnect from "./config/db.config";
+
+dbConnect();
 
 const app = express();
 
@@ -14,7 +18,7 @@ app.use(
 );
 
 app.use(express.json());
-app.use('/api', indexRoutes);
+app.use("/api", indexRoutes);
 
 const port = 3000;
 
