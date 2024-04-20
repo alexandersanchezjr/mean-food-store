@@ -1,5 +1,18 @@
 import { Request, Response } from "express";
 import { sample_foods, sample_tags } from "../data";
+import asyncHandler from "express-async-handler";
+import { FoodModel } from "../model/Food.model";
+
+const seedFoods = asyncHandler(async (req: Request, res: Response) => {
+  const foodsCounts = await FoodModel.countDocuments();
+  if (foodsCounts > 0) {
+    res.send("Foods already exist");
+    return;
+  }
+
+  await FoodModel.create(sample_foods);
+  res.send("Foods created");
+});
 
 const getAllFoods = async (req: Request, res: Response) => {
   res.send(sample_foods);
@@ -29,6 +42,7 @@ const getAllFoodsByTag = async (req: Request, res: Response) => {
 };
 
 export {
+  seedFoods,
   getAllFoods,
   getFoodByName,
   getFoodById,

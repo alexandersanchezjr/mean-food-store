@@ -3,6 +3,7 @@ import * as controller from "../controller/food.controller";
 
 const foodRouter = Router();
 
+foodRouter.get("/seed", controller.seedFoods);
 foodRouter.get("/", controller.getAllFoods);
 foodRouter.get("/search/:name", controller.getFoodByName);
 foodRouter.get("/tags", controller.getAllTags);
