@@ -14,32 +14,54 @@ const seedFoods = asyncHandler(async (req: Request, res: Response) => {
   res.send("Foods created");
 });
 
-const getAllFoods = async (req: Request, res: Response) => {
-  res.send(sample_foods);
-};
-
-const getFoodByName = async (req: Request, res: Response) => {
-  const foods = sample_foods.filter((food) =>
-    food.name.toLowerCase().includes(req.params.name.toLowerCase())
-  );
+const getAllFoods = asyncHandler(async (req: Request, res: Response) => {
+  const foods = await FoodModel.find();
   res.send(foods);
-};
+});
 
-const getFoodById = async (req: Request, res: Response) => {
-  const food = sample_foods.find((food) => food.id === req.params.foodId);
+const getFoodByName = asyncHandler(async (req: Request, res: Response) => {
+  const nameRegex = new RegExp(req.params.name, "i");
+  const foods = await FoodModel.find({ name: { $regex: nameRegex } });
+  res.send(foods);
+});
+
+const getFoodById = asyncHandler(async (req: Request, res: Response) => {
+  const food = await FoodModel.findById(req.params.foodId);
   res.send(food);
-};
+});
 
-const getAllTags = async (req: Request, res: Response) => {
-  res.send(sample_tags);
-};
+const getAllTags = asyncHandler(async (req: Request, res: Response) => {
+  const tags = await FoodModel.aggregate([
+    {
+      $unwind: "$tags",
+    },
+    {
+      $group: {
+        _id: "$tags",
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        name: "$_id",
+        count: "$count",
+      },
+    },
+  ]).sort({ count: -1 });
 
-const getAllFoodsByTag = async (req: Request, res: Response) => {
-  const foods = sample_foods.filter((food) =>
-    food.tags?.includes(req.params.tagName)
-  );
+  const all = {
+    name: "All",
+    count: await FoodModel.countDocuments(),
+  };
+  tags.unshift(all);
+  res.send(tags);
+});
+
+const getAllFoodsByTag = asyncHandler(async (req: Request, res: Response) => {
+  const foods = await FoodModel.find({ tags: req.params.tagName });
   res.send(foods);
-};
+});
 
 export {
   seedFoods,
