@@ -13,7 +13,7 @@ const seedUsers = asyncHandler(async (req: Request, res: Response) => {
 
   await UserModel.create(sample_users);
   res.send("Users created");
-})
+});
 
 const register = async (req: Request, res: Response) => {
   res.send("register");
@@ -31,12 +31,22 @@ const login = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const generateTokenResponse = (user: any) => {
-  const token = jwt.sign({ email: user.email, password: user.password }, "secret", {
-    expiresIn: "30d",
-  });
+  const token = jwt.sign(
+    { id: user.id, email: user.email, password: user.password },
+    "secret",
+    {
+      expiresIn: "30d",
+    }
+  );
 
-  user.token = token;
-  return user;
+  return {
+    id: user.id,
+    token: token,
+    name: user.name,
+    email: user.email,
+    isAdmin: user.isAdmin,
+    address: user.address,
+  };
 };
 
 export { seedUsers, register, login };
