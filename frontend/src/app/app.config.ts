@@ -1,11 +1,16 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { StarRatingModule } from 'angular-star-rating';
-
 import { routes } from './app.routes';
-import { HttpClientModule } from '@angular/common/http';
+import {
+  HttpClientModule,
+  provideHttpClient,
+  withInterceptors,
+} from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
+import { LoadingService } from '@services/loading.service';
+import { loadingInterceptor } from '@shared/interceptors/loading.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,7 +23,9 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     importProvidersFrom(
       StarRatingModule.forRoot(),
-      HttpClientModule
-    )
+      HttpClientModule,
+      LoadingService
+    ),
+    provideHttpClient(withInterceptors([loadingInterceptor])),
   ],
 };
