@@ -8,7 +8,7 @@ import {
 import { TitleComponent } from '../../partials/title/title.component';
 import { NgIf } from '@angular/common';
 import { UserService } from '@services/user.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TextInputComponent } from '../../partials/text-input/text-input.component';
 import { DefaultButtonComponent } from '../../partials/default-button/default-button.component';
 
@@ -18,6 +18,7 @@ import { DefaultButtonComponent } from '../../partials/default-button/default-bu
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   imports: [
+    RouterModule,
     ReactiveFormsModule,
     TitleComponent,
     NgIf,

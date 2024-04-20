@@ -15,6 +15,10 @@
         type="password"
       />
       <app-default-button text="Login"/>
+      <div class="register">
+        Don't have an account? &nbsp;
+        <a routerLink="/register" [queryParams]="{ returnUrl: returnUrl }">Register</a>
+      </div>
     </form>
   </div>
 </div>

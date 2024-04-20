@@ -53,6 +53,8 @@ export class ValidationComponent {
 enum ValidationMessages {
   required = 'This field is required',
   email = 'Must be a valid email address',
+  minlength = 'Must be at least 6 characters',
+  passwordMismatch = 'Passwords must match',
 }
 
 type ValidationMessagesType = {

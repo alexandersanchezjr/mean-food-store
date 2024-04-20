@@ -5,4 +5,5 @@ export const environment = {
   tagsPath: '/tags',
   searchPath: '/search',
   loginPath: '/users/login',
+  registerPath: '/register',
 };
