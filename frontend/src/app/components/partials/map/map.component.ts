@@ -41,14 +41,37 @@ export class MapComponent {
   @Input()
   order!: Order;
 
+  @Input()
+  readonly: boolean = false;
+
   map!: Map;
   currentMarker!: Marker;
-  readonly: boolean = false;
 
   constructor(private locationService: LocationService) {}
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
+    if (!this.order) return;
     this.initializeMap();
+
+    if (this.readonly && this.addressLatLng) {
+      this.showLocationOnReadonlyMode();
+    }
+  }
+
+  showLocationOnReadonlyMode() {
+    const m = this.map;
+    this.setMarker(this.addressLatLng);
+    m.setView(this.addressLatLng, 17);
+
+    m.dragging.disable();
+    m.touchZoom.disable();
+    m.doubleClickZoom.disable();
+    m.scrollWheelZoom.disable();
+    m.boxZoom.disable();
+    m.keyboard.disable();
+    m.off('click');
+    m.tap?.disable();
+    this.currentMarker.dragging?.disable();
   }
 
   initializeMap() {
@@ -85,11 +108,11 @@ export class MapComponent {
 
     this.currentMarker.on('dragend', () => {
       this.addressLatLng = this.currentMarker.getLatLng();
-    })
+    });
   }
 
-  set addressLatLng(latlng: LatLng){
-    if(!latlng.lat.toFixed) return;
+  set addressLatLng(latlng: LatLng) {
+    if (!latlng.lat.toFixed) return;
 
     latlng.lat = parseFloat(latlng.lat.toFixed(8));
     latlng.lng = parseFloat(latlng.lng.toFixed(8));
@@ -97,7 +120,7 @@ export class MapComponent {
     console.log(this.order.addressLatLng);
   }
 
-  get addressLatLng(){
+  get addressLatLng() {
     return this.order.addressLatLng!;
   }
 }

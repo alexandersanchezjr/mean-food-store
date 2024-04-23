@@ -8,4 +8,5 @@ export const environment = {
   registerPath: '/users/register',
   orderPath: '/orders',
   createOrderPath: '/orders/create',
+  newOrderForCurrentUserPath: '/orders/newOrderForCurrentUser',
 };

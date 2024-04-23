@@ -5,6 +5,8 @@ export const environment = {
   tagsPath: '/tags',
   searchPath: '/search',
   loginPath: '/users/login',
-  registerPath: '/register',
+  registerPath: '/users/register',
+  orderPath: '/orders',
   createOrderPath: '/orders/create',
+  newOrderForCurrentUserPath: '/orders/newOrderForCurrentUser',
 };
