@@ -8,6 +8,8 @@ import { TextInputComponent } from "../../partials/text-input/text-input.compone
 import { TitleComponent } from "../../partials/title/title.component";
 import { OrderListComponent } from "../../partials/order-list/order-list.component";
 import { MapComponent } from "../../partials/map/map.component";
+import { OrderService } from '@services/order.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-checkout',
@@ -24,7 +26,9 @@ export class CheckoutComponent {
     cartService: CartService,
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private orderService: OrderService,
+    private router: Router
   ) {
     const cart = cartService.getCart();
     this.order.items = cart.items;
@@ -50,7 +54,22 @@ export class CheckoutComponent {
       return;
     }
 
+    if (!this.order.addressLatLng) {
+      this.toastrService.warning('Please select your address on the map', 'Warning');
+      return;
+    }
+
     this.order.name = this.formControls['name'].value;
     this.order.address = this.formControls['address'].value;
+
+    this.orderService.createOrder(this.order).subscribe({
+      next: () => {
+        this.toastrService.success('Order created successfully', 'Success');
+        this.router.navigate(['/payment'])
+      },
+      error: (errorResponse) => {
+        this.toastrService.error('Failed to create order: ' + errorResponse.error, 'Error');
+      }
+    });
   }
 }
