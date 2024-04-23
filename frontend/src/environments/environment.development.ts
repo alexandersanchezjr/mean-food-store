@@ -6,4 +6,5 @@ export const environment = {
   searchPath: '/search',
   loginPath: '/users/login',
   registerPath: '/register',
+  createOrderPath: '/orders/create',
 };
