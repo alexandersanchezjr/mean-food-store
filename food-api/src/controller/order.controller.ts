@@ -13,14 +13,18 @@ const createOrder = asyncHandler(async (req: any, res: any) => {
 
   await OrderModel.deleteOne({ user: req.user.id, status: OrderStatus.NEW });
 
-  const newOrder = new OrderModel({...requestOrder, user: req.user.id});
+  const newOrder = new OrderModel({ ...requestOrder, user: req.user.id });
   newOrder.save();
   res.send(newOrder);
 });
 
 const getNewOrderForCurrentUser = asyncHandler(async (req: any, res: any) => {
-  const order = await OrderModel.findOne({ status: "NEW" });
-  res.send(order);
+  const order = await OrderModel.findOne({
+    user: req.user.id,
+    status: OrderStatus.NEW,
+  });
+  if (order) res.send(order);
+  else res.status(HTTP_BAD_REQUEST).send();
 });
 
 const payOrder = asyncHandler(async (req: any, res: any) => {
