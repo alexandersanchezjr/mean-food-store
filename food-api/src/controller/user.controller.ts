@@ -43,9 +43,10 @@ const register = asyncHandler(async (req: Request, res: Response) => {
 
 const login = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  const user = await UserModel.findOne({ email, password });
+  const user = await UserModel.findOne({ email });
+  const isPasswordValid = user && (await bcrypt.compare(password, user.password));
 
-  if (user) {
+  if (isPasswordValid) {
     res.send(generateTokenResponse(user));
   } else {
     res.status(HTTP_BAD_REQUEST).send("User not found");
