@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { CancelComponent } from '@components/pages/cancel/cancel.component';
 import { CartComponent } from '@components/pages/cart/cart.component';
 import { CheckoutComponent } from '@components/pages/checkout/checkout.component';
 import { FoodComponent } from '@components/pages/food/food.component';
@@ -6,6 +7,7 @@ import { HomeComponent } from '@components/pages/home/home.component';
 import { LoginComponent } from '@components/pages/login/login.component';
 import { PaymentComponent } from '@components/pages/payment/payment.component';
 import { RegisterComponent } from '@components/pages/register/register.component';
+import { SuccessComponent } from '@components/pages/success/success.component';
 import { authGuard } from '@shared/guards/auth.guard';
 
 export const routes: Routes = [
@@ -17,6 +19,8 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'checkout', component: CheckoutComponent, canActivate: [authGuard] },
-  { path: 'payment', component: PaymentComponent, canActivate: [authGuard] }
+  { path: 'payment', component: PaymentComponent, canActivate: [authGuard] },
+  { path: 'success', component: SuccessComponent, canActivate: [authGuard] },
+  { path: 'cancel', component: CancelComponent, canActivate: [authGuard] }
 ];
 

@@ -12,10 +12,13 @@ import { provideToastr } from 'ngx-toastr';
 import { LoadingService } from '@services/loading.service';
 import { loadingInterceptor } from '@shared/interceptors/loading.interceptor';
 import { authInterceptor } from '@shared/interceptors/auth.interceptor';
+import { provideNgxStripe } from 'ngx-stripe';
+import { environment } from 'environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
+    provideNgxStripe(environment.stripeKey),
     provideToastr({
       timeOut: 3000,
       positionClass: 'toast-bottom-right',

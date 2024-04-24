@@ -5,14 +5,14 @@ import { Order } from '@shared/models/Order';
 import { TitleComponent } from "../../partials/title/title.component";
 import { OrderListComponent } from "../../partials/order-list/order-list.component";
 import { MapComponent } from "../../partials/map/map.component";
-import { PaypalButtonComponent } from "../../partials/paypal-button/paypal-button.component";
+import { PayButtonComponent } from "@components/partials/pay-button/pay-button.component";
 
 @Component({
     selector: 'app-payment',
     standalone: true,
     templateUrl: './payment.component.html',
     styleUrl: './payment.component.css',
-    imports: [TitleComponent, OrderListComponent, MapComponent, PaypalButtonComponent]
+    imports: [TitleComponent, OrderListComponent, MapComponent, PayButtonComponent]
 })
 export class PaymentComponent {
 
