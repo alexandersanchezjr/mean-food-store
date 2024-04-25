@@ -1,0 +1,18 @@
+services:
+  backend:
+    container_name: mean-food-store-backend
+    image: alexjr2002/mean-food-store-backend:latest
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.backend
+    ports:
+      - "3000:3000"
+
+  frontend:
+    container_name: mean-food-store-frontend  
+    image: alexjr2002/mean-food-store-frontend:latest
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "9000:80"
