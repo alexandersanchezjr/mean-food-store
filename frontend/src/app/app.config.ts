@@ -14,6 +14,7 @@ import { loadingInterceptor } from '@shared/interceptors/loading.interceptor';
 import { authInterceptor } from '@shared/interceptors/auth.interceptor';
 import { provideNgxStripe } from 'ngx-stripe';
 import { environment } from 'environments/environment';
+import { provideClientHydration } from '@angular/platform-browser';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,6 +31,6 @@ export const appConfig: ApplicationConfig = {
       HttpClientModule,
       LoadingService
     ),
-    provideHttpClient(withInterceptors([authInterceptor, loadingInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor, loadingInterceptor])), provideClientHydration(),
   ],
 };
