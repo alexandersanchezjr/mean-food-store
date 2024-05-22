@@ -36,6 +36,31 @@ The application is deployed using Terraform IaC in an Azure Kubernetes Service (
 - Terraform installed
 - Kubernetes CLI (kubectl) installed
 
+### Docker steps
+
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/alexandersanchezjr/mean-food-store.git
+   ```
+2. **Build the Docker images**:
+   ```bash
+   docker build \
+   --build-arg SERVER_URL="${SERVER_URL}" \
+   --build-arg FOODS_PATH="${FOODS_PATH}" \
+   --build-arg TAGS_PATH="${TAGS_PATH}" \
+   --build-arg SEARCH_PATH="${SEARCH_PATH}" \
+   --build-arg LOGIN_PATH="${LOGIN_PATH}" \
+   --build-arg REGISTER_PATH="${REGISTER_PATH}" \
+   --build-arg ORDER_PATH="${ORDER_PATH}" \
+   --build-arg CREATE_ORDER_PATH="${CREATE_ORDER_PATH}" \
+   --build-arg NEW_ORDER_FOR_CURRENT_USER_PATH="${NEW_ORDER_FOR_CURRENT_USER_PATH}" \
+   --build-arg PAY_ORDER_PATH="${PAY_ORDER_PATH}" \
+   --build-arg STRIPE_KEY="${STRIPE_KEY}" \
+   --build-arg IS_PRODUCTION=${IS_PRODUCTION} \
+   -t ${DOCKERHUB_ACCOUNT}/food-store:${TAG} .
+   ```
+   Replace the variables with your own values.
+
 ### Deployment Steps
 
 1. **Clone the Repository:**
