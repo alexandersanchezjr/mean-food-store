@@ -50,3 +50,27 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           STRIPE_KEY: ${{ secrets.STRIPE_KEY }}
+  
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS Credentials  
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+  
+      - name: Update KubeConfig 
+        run: |   
+           aws eks update-kubeconfig --name mean-food-store-cluster --region=us-east-1
+        
+      - name: App k8s yaml
+        run: |
+           kubectl apply -f k8s/backend/deployment.yaml \
+           sleep 10
+           kubectl apply -f k8s/frontend/deployment \
+           sleep 10
+      - name: Show LoadBalancer IP
+        run: |
+            kubectl get svc
