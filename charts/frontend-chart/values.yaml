@@ -1,0 +1,16 @@
+# frontend-chart/values.yaml
+replicaCount: 1
+
+image:
+  repository: paulatrujillo/mean-food-store-frontend
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  port: 80
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}

@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: paulatrujillo/mean-food-store-backend:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secrets
+                  key: MONGO_URI
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secrets
+                  key: JWT_SECRET
+            - name: STRIPE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secrets
+                  key: STRIPE_SECRET_KEY
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backend-secrets
+data:
+  MONGO_URI: bW9uZ29kYitzcnY6Ly9hbGV4YW5kZXJzYW5jaGV6anI6Z0FNVzh3SUdJOTlJNVRFbUBmb29kLXN0b3JlLWNsdXN0ZXIuYTBoZmtocy5tb25nb2RiLm5ldC9mb29kLXN0b3JlLWRiP3JldHJ5V3JpdGVzPXRydWUmdz1tYWpvcml0eSZhcHBOYW1lPWZvb2Qtc3RvcmUtY2x1c3Rlcgo=
+  JWT_SECRET: c2VjcmV0Cg==
+  STRIPE_SECRET_KEY: c2tfdGVzdF81MVA5NmtHUnJncTlSMGNhRDRwSmxRTmhZb053WGZ4VXVrekg0Y1ZrdmdvUDNRQW9qbTlRMEJqNUtOTWNYWnhsZFgySHpmWm9uUVgzWW5xeDBjSFA5NzluVzAwbk55OXZ4dkQK
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: LoadBalancer
