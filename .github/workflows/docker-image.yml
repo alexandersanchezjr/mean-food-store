@@ -68,9 +68,9 @@ jobs:
         
       - name: App k8s yaml
         run: |
-           kubectl apply -f k8s/backend/deployment.yaml && \
+           kubectl apply -f k8s/expressjs/deployment.yaml && \
            sleep 10 &&
-           kubectl apply -f k8s/frontend/deployment && \
+           kubectl apply -f k8s/angular/deployment && \
            sleep 10
       - name: Show LoadBalancer IP
         run: |
