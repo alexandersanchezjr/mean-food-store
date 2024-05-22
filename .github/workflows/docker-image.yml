@@ -42,9 +42,9 @@ jobs:
           --build-arg PAY_ORDER_PATH="/orders/pay" \
           --build-arg STRIPE_KEY=${{ secrets.STRIPE_KEY }} \
           --build-arg IS_PRODUCTION=true \
-          -t alexjr2002/food-store-frontend:prod .
+          -t ${{ secrets.DOCKER_USERNAME }}/food-store-frontend:prod .
       - name: Push Docker Frontend Image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/food-store-frontend:v.1
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/food-store-frontend:${{ secrets.DOCKER_USERNAME }}
         
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
