@@ -21,8 +21,8 @@ jobs:
       - name: Build and Push Docker Backend Image
         uses: docker/build-push-action@v5.0.0
         with:
-          context: ./  # Context remains the same (current directory)
-          file: ./backend/Dockerfile  # Dynamic Dockerfile path
+          context: ./backend  # Context remains the same (current directory)
+          file: Dockerfile  # Dynamic Dockerfile path
           push: true  # Enable pushing the image
           tags: ${{ secrets.DOCKER_USERNAME }}/food-store-backend-test:latest  # Separate tags for services
       - name: Run Frontend Tests
