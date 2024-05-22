@@ -31,6 +31,6 @@ export const appConfig: ApplicationConfig = {
       HttpClientModule,
       LoadingService
     ),
-    provideHttpClient(withInterceptors([authInterceptor, loadingInterceptor])), provideClientHydration(),
+    provideHttpClient(withInterceptors([authInterceptor, loadingInterceptor])), provideClientHydration(), provideClientHydration(),
   ],
 };

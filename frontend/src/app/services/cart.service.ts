@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import { Cart } from '@shared/models/Cart';
 import { CartItem } from '@shared/models/CartItem';
 import { Food } from '@shared/models/Food';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,12 @@ export class CartService {
     this.cart
   );
 
-  constructor() {}
+  private isBrowser: boolean;
+
+
+  constructor(@Inject(PLATFORM_ID) private platformId: any) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   addToCart(food: Food): void {
     let cartItem = this.cart.items.find((item) => item.food.id === food.id);
@@ -52,6 +58,7 @@ export class CartService {
   }
 
   private setCartToLocalStorage(): void {
+    if (!this.isBrowser) return;
     this.cart.totalPrice = this.cart.items.reduce(
       (prevSum, currentItem) => prevSum + currentItem.price,
       0
@@ -67,6 +74,7 @@ export class CartService {
   }
 
   getCartFromLocalStorage(): Cart {
+    if (!this.isBrowser) return new Cart();
     const cartJson = localStorage.getItem('Cart');
     return cartJson ? JSON.parse(cartJson) : new Cart();
   }

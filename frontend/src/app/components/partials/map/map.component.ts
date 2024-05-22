@@ -1,64 +1,50 @@
-import { NgIf } from '@angular/common';
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import {isPlatformBrowser, NgIf} from '@angular/common';
+import { Component, ElementRef, Input, ViewChild, OnChanges, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import { LocationService } from '@services/location.service';
 import { Order } from '@shared/models/Order';
-import {
-  Icon,
-  IconOptions,
-  LatLng,
-  LatLngExpression,
-  LatLngTuple,
-  Map,
-  Marker,
-  icon,
-  map,
-  marker,
-  tileLayer,
-} from 'leaflet';
 
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [NgIf],
   templateUrl: './map.component.html',
-  styleUrl: './map.component.css',
+  styleUrls: ['./map.component.css'],
+  imports: [
+    NgIf
+  ]
 })
-export class MapComponent {
-  private readonly MARKER_ZOOM_LEVEL: number = 12;
-  private readonly MARKER_ICON: Icon<IconOptions> = icon({
-    iconUrl:
-      'https://res.cloudinary.com/foodmine/image/upload/v1638842791/map/marker_kbua9q.png',
-    iconSize: [42, 42],
-    iconAnchor: [21, 42],
-  });
-  private readonly DEFAULT_LATLNG: LatLngTuple = [3.4516, -76.532];
-  private readonly URL_TEMPLATE: string =
-    'https://{s}.tile.osm.org/{z}/{x}/{y}.png';
+export class MapComponent implements OnChanges, AfterViewInit {
+  private MARKER_ZOOM_LEVEL: number = 12;
+  private MARKER_ICON: any;
+  private DEFAULT_LATLNG: [number, number] = [3.4516, -76.532];
+  private URL_TEMPLATE: string = 'https://{s}.tile.osm.org/{z}/{x}/{y}.png';
 
-  @ViewChild('map', { static: true })
-  mapRef!: ElementRef;
+  @ViewChild('map', { static: true }) mapRef!: ElementRef;
 
-  @Input()
-  order!: Order;
+  @Input() order!: Order;
+  @Input() readonly: boolean = false;
 
-  @Input()
-  readonly: boolean = false;
+  map: any;
+  currentMarker: any;
 
-  map!: Map;
-  currentMarker!: Marker;
+  constructor(private locationService: LocationService, @Inject(PLATFORM_ID) private platformId: any) {}
 
-  constructor(private locationService: LocationService) {}
-
-  ngOnChanges(): void {
-    if (!this.order) return;
-    this.initializeMap();
+  async ngOnChanges(): Promise<void> {
+    if (!this.order || !isPlatformBrowser(this.platformId)) return;
+    await this.initializeMap();
 
     if (this.readonly && this.addressLatLng) {
       this.showLocationOnReadonlyMode();
     }
   }
 
-  showLocationOnReadonlyMode() {
+  async ngAfterViewInit(): Promise<void> {
+    if (isPlatformBrowser(this.platformId)) {
+      await this.initializeMap();
+    }
+  }
+
+  async showLocationOnReadonlyMode() {
+    if (!this.map) return;
     const m = this.map;
     this.setMarker(this.addressLatLng);
     m.setView(this.addressLatLng, 17);
@@ -74,33 +60,45 @@ export class MapComponent {
     this.currentMarker.dragging?.disable();
   }
 
-  initializeMap() {
-    if (this.map) return;
+  async initializeMap() {
+    if (this.map || !isPlatformBrowser(this.platformId)) return;
 
-    this.map = map(this.mapRef.nativeElement, {
+    const leaflet = await import('leaflet');
+    this.MARKER_ICON = leaflet.icon({
+      iconUrl: 'https://res.cloudinary.com/foodmine/image/upload/v1638842791/map/marker_kbua9q.png',
+      iconSize: [42, 42],
+      iconAnchor: [21, 42],
+    });
+
+    this.map = leaflet.map(this.mapRef.nativeElement, {
       attributionControl: false,
     }).setView(this.DEFAULT_LATLNG, this.MARKER_ZOOM_LEVEL);
 
-    tileLayer(this.URL_TEMPLATE).addTo(this.map);
+    leaflet.tileLayer(this.URL_TEMPLATE).addTo(this.map);
 
-    this.map.on('click', (event) => {
+    this.map.on('click', (event: any) => {
       this.setMarker(event.latlng);
     });
   }
 
-  findMyLocation() {
+  async findMyLocation() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
     this.locationService.getCurrentLocation().subscribe((latLng) => {
       this.setMarker(latLng);
       this.map.setView(latLng, 17);
     });
   }
 
-  setMarker(latLng: LatLngExpression): void {
-    this.addressLatLng = latLng as LatLng;
+  async setMarker(latLng: any): Promise<void> {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const leaflet = await import('leaflet');
+    this.addressLatLng = latLng as any;
     if (this.currentMarker) {
       this.currentMarker.setLatLng(latLng);
     } else {
-      this.currentMarker = marker(latLng, {
+      this.currentMarker = leaflet.marker(latLng, {
         draggable: true,
         icon: this.MARKER_ICON,
       }).addTo(this.map);
@@ -111,7 +109,7 @@ export class MapComponent {
     });
   }
 
-  set addressLatLng(latlng: LatLng) {
+  set addressLatLng(latlng: any) {
     if (!latlng.lat.toFixed) return;
 
     latlng.lat = parseFloat(latlng.lat.toFixed(8));

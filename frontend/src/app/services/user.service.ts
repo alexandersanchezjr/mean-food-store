@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { User } from '@shared/models/User';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { IUserLogin } from '@shared/interfaces/IUserLogin';
@@ -6,17 +6,23 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { IUserRegister } from '@shared/interfaces/IUserRegister';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private userSubject: BehaviorSubject<User> = new BehaviorSubject(
-    this.getUserFromLocalStorage()
-  );
+  private userSubject: BehaviorSubject<User>;
   public userObservable: Observable<User>;
+  private isBrowser: boolean;
 
-  constructor(private http: HttpClient, private toastr: ToastrService) {
+  constructor(
+    private http: HttpClient,
+    private toastr: ToastrService,
+    @Inject(PLATFORM_ID) private platformId: any
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+    this.userSubject = new BehaviorSubject(this.getUserFromLocalStorage());
     this.userObservable = this.userSubject.asObservable();
   }
 
@@ -56,17 +62,23 @@ export class UserService {
 
   logout(): void {
     this.userSubject.next(new User());
-    localStorage.removeItem(USER_KEY);
-    window.location.reload();
+    if (this.isBrowser) {
+      localStorage.removeItem(USER_KEY);
+      window.location.reload();
+    }
   }
 
   private setUserToLocalStorage(user: User): void {
-    localStorage.setItem(USER_KEY, JSON.stringify(user));
+    if (this.isBrowser) {
+      localStorage.setItem(USER_KEY, JSON.stringify(user));
+    }
   }
 
   private getUserFromLocalStorage(): User {
-    const userJson = localStorage.getItem(USER_KEY);
-    if (userJson) return JSON.parse(userJson) as User;
+    if (this.isBrowser) {
+      const userJson = localStorage.getItem(USER_KEY);
+      if (userJson) return JSON.parse(userJson) as User;
+    }
     return new User();
   }
 }
