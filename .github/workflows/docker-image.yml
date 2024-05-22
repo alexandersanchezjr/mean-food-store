@@ -44,7 +44,7 @@ jobs:
           --build-arg IS_PRODUCTION=true \
           -t ${{ secrets.DOCKER_USERNAME }}/food-store-frontend:prod .
       - name: Push Docker Frontend Image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/food-store-frontend:${{ secrets.DOCKER_USERNAME }}
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/food-store-frontend:prod
         
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
