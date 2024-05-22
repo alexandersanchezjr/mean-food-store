@@ -1,0 +1,49 @@
+FROM node:hydrogen
+LABEL authors="github.com/alexandersanchezjr"
+LABEL description="This is a frontend container"
+LABEL version="1.0"
+
+WORKDIR /usr/src/app
+
+# Pass build arguments and set them as environment variables
+ARG SERVER_URL
+ARG FOODS_PATH
+ARG TAGS_PATH
+ARG SEARCH_PATH
+ARG LOGIN_PATH
+ARG REGISTER_PATH
+ARG ORDER_PATH
+ARG CREATE_ORDER_PATH
+ARG NEW_ORDER_FOR_CURRENT_USER_PATH
+ARG PAY_ORDER_PATH
+ARG STRIPE_KEY
+ARG IS_PRODUCTION
+
+# Set the environment variables
+ENV SERVER_URL=${SERVER_URL}
+ENV FOODS_PATH=${FOODS_PATH}
+ENV TAGS_PATH=${TAGS_PATH}
+ENV SEARCH_PATH=${SEARCH_PATH}
+ENV LOGIN_PATH=${LOGIN_PATH}
+ENV REGISTER_PATH=${REGISTER_PATH}
+ENV ORDER_PATH=${ORDER_PATH}
+ENV CREATE_ORDER_PATH=${CREATE_ORDER_PATH}
+ENV NEW_ORDER_FOR_CURRENT_USER_PATH=${NEW_ORDER_FOR_CURRENT_USER_PATH}
+ENV PAY_ORDER_PATH=${PAY_ORDER_PATH}
+ENV STRIPE_KEY=${STRIPE_KEY}
+ENV IS_PRODUCTION=${IS_PRODUCTION}
+
+# Copy project
+COPY . .
+
+# Expose the port the app runs on
+EXPOSE 4000
+
+# Install dependencies
+RUN npm install
+
+# Build the app
+RUN npm run build
+
+# Serve ssr
+CMD ["npm", "run", "serve:ssr:frontend"]

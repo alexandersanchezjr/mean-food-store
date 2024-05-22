@@ -23,7 +23,7 @@ const envFile = `export const environment = {
   };
 `;
 
-const targetPath = path.join(__dirname, `../frontend/src/environments/environment${envPath}.ts`);
+const targetPath = path.join(__dirname, `./src/environments/environment${envPath}.ts`);
 fs.writeFile(targetPath, envFile, (err) => {
   if (err) {
     console.error(err);
