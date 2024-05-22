@@ -29,7 +29,7 @@ jobs:
         run: cd frontend && npm run test
       - name: Build Docker Frontend Image
         run: |
-          docker build \
+          cd frontend && docker build \
           --build-arg SERVER_URL="http://localhost:3000/api" \
           --build-arg FOODS_PATH="/foods" \
           --build-arg TAGS_PATH="/tags" \
@@ -42,9 +42,9 @@ jobs:
           --build-arg PAY_ORDER_PATH="/orders/pay" \
           --build-arg STRIPE_KEY=${{ secrets.STRIPE_KEY }} \
           --build-arg IS_PRODUCTION=true \
-          -t alexjr2002/food-store-frontend:prod .
+          -t ${{ secrets.DOCKER_USERNAME }}/food-store-frontend:prod .
       - name: Push Docker Frontend Image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/food-store-frontend:v.1
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/food-store-frontend:prod
         
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
